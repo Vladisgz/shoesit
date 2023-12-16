@@ -8,8 +8,8 @@ export default function CartProvider({ children }: { children: ReactNode }) {
       mode="payment"
       cartMode="client-only"
       stripe={process.env.NEXT_PUBLIC_STRIPE_KEY as string}
-      successUrl="http://localhost:3001/stripe/success"
-      cancelUrl="http://localhost:3001/stripe/error"
+      successUrl="https://shoesit-delta.vercel.app//stripe/success"
+      cancelUrl="https://shoesit-delta.vercel.app//stripe/error"
       currency="USD"
       billingAddressCollection={false}
       shouldPersist={true}
