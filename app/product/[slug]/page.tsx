@@ -38,9 +38,12 @@ export default async function ProductPge({
 
   let shippingTerm = "";
 
-  if (data.price < 100) {
+  const salePrice = data.price - (data.price * data.percent) / 100;
+  let finalPrice = data.sale ? salePrice : data.price;
+
+  if (finalPrice < 100) {
     shippingTerm = "4-6 days shipping";
-  } else if (data.price >= 100 && data.price <= 150) {
+  } else if (finalPrice >= 100 && finalPrice <= 150) {
     shippingTerm = "2-4 days shipping";
   } else {
     shippingTerm = "1-2 days express shipping";
@@ -65,10 +68,11 @@ export default async function ProductPge({
             {data.sale ? (
               <div className="flex items-end gap-3">
                 <span className="text-sm lg:text-base tracking-wide font-bold text-gray-700 ">
-                  ${data.price.toFixed(2)}
+                  {/* ${(data.price - (data.price * data.percent) / 100).toFixed(2)} */}
+                  ${salePrice.toFixed(2)}
                 </span>
                 <span className="text-sm lg:text-base tracking-wide font-medium text-gray-500 line-through">
-                  ${(data.price + data.percent).toFixed(2)}
+                  ${data.price.toFixed(2)}
                 </span>
                 <span className="text-sm text lg:text-base font-semibold text-green-700">
                   {data.percent}% off

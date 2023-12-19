@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -8,9 +9,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 
-import { Trash2 } from "lucide-react";
 import Image from "next/image";
-
 import { useShoppingCart } from "use-shopping-cart";
 
 export default function ShoppingCart() {
@@ -27,17 +26,23 @@ export default function ShoppingCart() {
     clearCart,
   } = useShoppingCart();
 
+  const clearAllCart = useRef<HTMLButtonElement | null>(null);
+
   async function handleCheckout(event: any) {
     event.preventDefault();
 
     try {
       const result = await redirectToCheckout();
 
+      console.log(cartDetails);
+
       if (result?.error) {
         console.log("Payment failed");
       } else {
         console.log("Payment successful");
-        clearCart();
+        if (clearAllCart.current !== null) {
+          clearAllCart.current.click();
+        }
       }
     } catch (e) {
       console.error("An error occurred:", e);
@@ -59,13 +64,14 @@ export default function ShoppingCart() {
               ) : (
                 <>
                   <button
+                    ref={clearAllCart}
                     type="button"
                     className="text-primary hover:text-primary/75 text-sm absolute right-0 mr-6"
                     onClick={() => clearCart()}
                   >
                     Clear All
                   </button>
-
+                  let totalPrice = 0
                   {Object.values(cartDetails ?? {}).map((entry) => (
                     <li key={entry.id} className="flex py-6 ">
                       <div className="w-24 h-24 flex-shrink-0  rounded-lg border border-gray-200 overflow-hidden ">
@@ -81,7 +87,24 @@ export default function ShoppingCart() {
                         <div>
                           <div className="flex text-base font-medium text-gray-800 justify-between">
                             <h3>{entry.name}</h3>
-                            <p className="ml-4">${entry.price.toFixed(2)}</p>
+                            <p className="ml-4">
+                              {entry.sale !== undefined && entry.sale ? (
+                                <>
+                                  <span className="text-sm font-medium text-gray-700">
+                                    $
+                                    {(
+                                      entry.price -
+                                      (entry.price * entry.percent) / 100
+                                    ).toFixed(2)}
+                                  </span>
+                                  <span className="text-sm font-normal text-gray-500 line-through">
+                                    ${entry.price.toFixed(2)}
+                                  </span>
+                                </>
+                              ) : (
+                                `$${entry.price.toFixed(2)}`
+                              )}
+                            </p>
                           </div>
 
                           <p className="text-sm text-gray-500 line-clamp-2 mt-1">

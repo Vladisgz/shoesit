@@ -87,10 +87,14 @@ export default async function CategoryPage({
                 {product.sale ? (
                   <div className="flex flex-col items-end">
                     <p className="text-sm font-medium text-gray-700">
-                      ${product.price.toFixed(2)}
+                      $
+                      {(
+                        product.price -
+                        (product.price * product.percent) / 100
+                      ).toFixed(2)}
                     </p>
                     <p className="text-sm font-normal text-gray-500 line-through">
-                      ${(product.price + product.percent).toFixed(2)}
+                      ${product.price.toFixed(2)}
                     </p>
                     <p className="text-sm font-semibold text-green-700">
                       {product.percent}% off
