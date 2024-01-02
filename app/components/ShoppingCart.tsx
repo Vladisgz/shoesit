@@ -34,12 +34,11 @@ export default function ShoppingCart() {
     try {
       const result = await redirectToCheckout();
 
-      console.log(cartDetails);
-
       if (result?.error) {
         console.log("Payment failed");
       } else {
-        console.log("Payment successful");
+        console.log("Payment successful: ", result);
+
         if (clearAllCart.current !== null) {
           clearAllCart.current.click();
         }
