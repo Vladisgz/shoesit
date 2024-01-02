@@ -7,7 +7,7 @@ export default function CartProvider({ children }: { children: ReactNode }) {
   const baseUrl =
     process.env.NODE_ENV === "production"
       ? "https://shoesit-delta.vercel.app/"
-      : "http://localhost:3002";
+      : "http://localhost:3000";
 
   return (
     <USCProvider
