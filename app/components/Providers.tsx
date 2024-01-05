@@ -11,13 +11,13 @@ export default function CartProvider({ children }: { children: ReactNode }) {
 
   return (
     <USCProvider
-      mode="payment"
       cartMode="client-only"
+      mode="payment"
       stripe={process.env.NEXT_PUBLIC_STRIPE_KEY as string}
       successUrl={`${baseUrl}/stripe/success`}
       cancelUrl={`${baseUrl}/stripe/error`}
       currency="USD"
-      billingAddressCollection={false}
+      billingAddressCollection={true}
       shouldPersist={true}
       language="en-Us"
     >
